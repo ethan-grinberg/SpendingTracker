@@ -1,5 +1,5 @@
 # Spending Tracker
-It parses your transaction alert emails from Chase and aggregates your monthly transactions, so you can compare to your budget.
+It parses your transaction alert emails from Chase and aggregates your monthly transactions, so you can compare to your budget. It also creates visualizations for tracking your spending.
 ## How to Use
 - Clone this repository
 - pip install the dependencies
