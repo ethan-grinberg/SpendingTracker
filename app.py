@@ -24,8 +24,10 @@ def parse_chase_transaction(email, subject, is_credit, date):
         description = extract(description_regex, subject)
     else:
         description = extract(description_regex, email)
+
     # strip extra characters
     description = description.strip()
+    description = description.split("<")[0]
 
     data = (date, amount, description)
     return data
@@ -50,7 +52,7 @@ def get_recent_transactions(last_date, password):
     for UID in UIDs:
         rawMessages = imapObj.fetch([UID], ['BODY[]', 'FLAGS'])
         message = pyzmail.PyzMessage.factory(rawMessages[UID][b'BODY[]'])
-        decoded_message = message.text_part.get_payload().decode(message.text_part.charset)
+        decoded_message = message.html_part.get_payload().decode(message.html_part.charset)
 
         # get date of email
         date_raw = message.get_decoded_header("Date")
@@ -62,8 +64,8 @@ def get_recent_transactions(last_date, password):
         subject = message.get_subject()
         if 'debit' not in subject:
             is_credit = True
-        transaction = parse_chase_transaction(decoded_message, subject, is_credit, date)
 
+        transaction = parse_chase_transaction(decoded_message, subject, is_credit, date)
         # add data
         transactions.append(transaction)
 
